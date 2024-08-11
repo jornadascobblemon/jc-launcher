@@ -1,0 +1,17 @@
+# Custom Language File for Launcher Customizer
+
+[ejs.app]
+title = "Jornadas Cobblemon"
+
+[ejs.landing]
+mediaYouTubeURL = "https://www.youtube.com/@samusalvador"
+mediaDiscordURL = "https://discord.gg/jornadascobblemon"
+
+[ejs.settings]
+sourceGithubLink = "https://github.com/Wirizada/launcher-releases"
+supportLink = "https://github.com/Wirizada/launcher-releases/issues"
+
+[ejs.welcome]
+welcomeHeader = "Bem Vindo ao Jornadas Cobblemon"
+welcomeDescription = "A maior Jornada Pokémon da sua vida começa agora!"
+welcomeDescCTA = ""

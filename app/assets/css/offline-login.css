@@ -1,0 +1,163 @@
+/* Login form. */
+#loginOfflineForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Login cancel button styles. */
+#loginOfflineCancelContainer {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+}
+
+/* Main login container. */
+#loginOfflineContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    transition: filter 0.25s ease;
+    background: rgba(0, 0, 0, 0.50);
+}
+
+/* Login cancel button styles. */
+#loginOfflineCancelButton {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+#loginOfflineCancelButton:hover #loginCancelIcon,
+#loginOfflineCancelButton:hover #loginCancelText,
+#loginOfflineCancelButton:focus #loginCancelIcon,
+#loginOfflineCancelButton:focus #loginCancelText {
+    text-shadow: 0px 0px 20px white;
+}
+#loginOfflineCancelButton:hover #loginCancelIcon,
+#loginOfflineCancelButton:focus #loginCancelIcon {
+    box-shadow: 0px 0px 20px white;
+}
+#loginOfflineCancelButton:active #loginCancelIcon,
+#loginOfflineCancelButton:active #loginCancelText {
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.75);
+    border-color: rgba(255, 255, 255, 0.75);
+}
+#loginOfflineCancelButton:active #loginCancelIcon {
+    box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.75);
+}
+#loginOfflineCancelButton:disabled {
+    pointer-events: none;
+}
+#loginOfflineCancelButton:disabled #loginCancelIcon,
+#loginOfflineCancelButton:disabled #loginCancelText {
+    color: rgba(255, 255, 255, 0.75);
+    border-color: rgba(255, 255, 255, 0.75);
+}
+
+/* Login form anchor styles. */
+#loginOfflineForm a {
+    font-size: 20px;
+    color: #848484;
+    font-weight: 23px;
+    text-decoration: none;
+    transition: 0.25s ease;
+}
+#loginOfflineForm a:hover,
+#loginOfflineForm a:focus {
+    color: #a2a2a2;
+    outline: none;
+}
+#loginOfflineForm a:active {
+    color: #8b8b8b;
+}
+
+
+/* Login button styles. */
+#loginOfflineButton {
+    background: #064fde; /* Cor de fundo azul */
+    color: #ffffff; /* Cor do texto branco */
+    font-weight: bold;
+    letter-spacing: 2px;
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas */
+    padding: 15px 30px; /* Ajuste no espaçamento interno */
+    margin: 10px 0px;
+    cursor: pointer;
+    position: relative;
+
+    transition: all 0.3s ease; /* Transição suave para todos os efeitos */
+    text-transform: uppercase; /* Texto em maiúsculas */
+    font-size: 14px; /* Tamanho da fonte */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra leve */
+}
+
+#loginOfflineButton:disabled {
+    color: rgba(255, 255, 255, 0.75); /* Cor mais clara quando desativado */
+    background: rgba(6, 79, 222, 0.5); /* Cor de fundo mais clara quando desativado */
+    pointer-events: none;
+}
+
+#loginOfflineButton[loading] {
+    color: #fff;
+    background: #064fde; /* Garantir fundo azul durante carregamento */
+}
+
+#loginOfflineButton:hover,
+#loginOfflineButton:focus {
+    background: #0536a8; /* Azul mais escuro ao passar o mouse ou focar */
+    text-shadow: 0px 0px 20px #ffffff; /* Sombra do texto branca */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais pronunciada ao passar o mouse */
+    outline: none;
+}
+
+#loginOfflineButton:active {
+    background: #043a8e; /* Azul ainda mais escuro quando clicado */
+    color: rgba(255, 255, 255, 0.9); /* Cor do texto levemente mais clara quando ativo */
+    text-shadow: 0px 0px 15px rgba(255, 255, 255, 0.9); /* Sombra do texto mais intensa */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reduzida ao clicar */
+    transform: translateY(2px); /* Efeito de pressão visual */
+}
+
+#loginSVG {
+    -webkit-transform: translate3d(0, 0, 0);
+    overflow: visible;
+    transform: rotate(90deg);
+    margin-left: 20px;
+    transition: 0.25s ease;
+    width: 20px;
+    height: 20px;
+}
+#loginOfflineButton:hover #loginSVG,
+#loginOfflineButton:focus #loginSVG {
+    -webkit-filter: drop-shadow(0px 0px 2px #fff);
+}
+#loginOfflineButton:active #loginSVG .arrowLine {
+    stroke: #c7c7c7;
+}
+#loginOfflineButton:active #loginSVG {
+    -webkit-filter: drop-shadow(0px 0px 2px #c7c7c7);
+}
+#loginOfflineButton:disabled #loginSVG .arrowLine {
+    stroke: rgba(255, 255, 255, 0.75);
+}
+
+#loginOfflineButtonContent {
+    display: flex;
+    align-items: center;
+}
+
+#loginOfflineButton .circle-loader,
+#loginOfflineButton[loading] #loginSVG {
+    display: none;
+}
+#loginOfflineButton[loading] .circle-loader,
+#loginOfflineButton #loginSVG {
+    display: initial;
+}
