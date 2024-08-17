@@ -47,12 +47,22 @@ if(!isDev){
                 break
             case 'update-available':
                 loggerAutoUpdater.info('New update available', info.version)
-                
-                if(process.platform === 'darwin'){
-                    info.darwindownload = `https://github.com/jornadascobblemon/Atualizacoes-JC/releases/download/${info.version}/Jornadas-Cobblemon-setup-${info.version}${process.arch === 'x64' ? '-x64' : '-ia32'}.exe`
+
+                // Definir URLs de download baseados na plataforma
+                let downloadUrl = null
+                if(process.platform === 'win32'){
+                    downloadUrl = `https://github.com/jornadascobblemon/Atualizacoes-JC/releases/download/${info.version}/Jornadas-Cobblemon-setup-${info.version}-x64.exe`
+                } else if(process.platform === 'darwin'){
+                    downloadUrl = `https://github.com/jornadascobblemon/Atualizacoes-JC/releases/download/${info.version}/Jornadas-Cobblemon-setup-${info.version}.dmg`
+                } else if(process.platform === 'linux'){
+                    downloadUrl = `https://github.com/jornadascobblemon/Atualizacoes-JC/releases/download/${info.version}/Jornadas-Cobblemon-setup-${info.version}.AppImage`
+                }
+
+                if(downloadUrl){
+                    info.downloadUrl = downloadUrl
                     showUpdateUI(info)
                 }
-                
+
                 populateSettingsUpdateInformation(info)
                 break
             case 'update-downloaded':
@@ -106,22 +116,9 @@ function changeAllowPrerelease(val){
 }
 
 function showUpdateUI(info){
-    //TODO Make this message a bit more informative `${info.version}`
+    // TODO: Make this message a bit more informative `${info.version}`
     document.getElementById('image_seal_container').setAttribute('update', true)
     document.getElementById('image_seal_container').onclick = () => {
-        /*setOverlayContent('Update Available', 'A new update for the launcher is available. Would you like to install now?', 'Install', 'Later')
-        setOverlayHandler(() => {
-            if(!isDev){
-                ipcRenderer.send('autoUpdateAction', 'installUpdateNow')
-            } else {
-                console.error('Cannot install updates in development environment.')
-                toggleOverlay(false)
-            }
-        })
-        setDismissHandler(() => {
-            toggleOverlay(false)
-        })
-        toggleOverlay(true, true)*/
         switchView(getCurrentView(), VIEWS.settings, 500, 500, () => {
             settingsNavItemListener(document.getElementById('settingsNavUpdate'), false)
         })
@@ -175,20 +172,10 @@ document.addEventListener('readystatechange', function () {
         })
 
     } else if(document.readyState === 'complete'){
-
-        //266.01
-        //170.8
-        //53.21
-        // Bind progress bar length to length of bot wrapper
-        //const targetWidth = document.getElementById("launch_content").getBoundingClientRect().width
-        //const targetWidth2 = document.getElementById("server_selection").getBoundingClientRect().width
-        //const targetWidth3 = document.getElementById("launch_button").getBoundingClientRect().width
-
         document.getElementById('launch_details').style.maxWidth = 266.01
         document.getElementById('launch_progress').style.width = 170.8
         document.getElementById('launch_details_right').style.maxWidth = 170.8
         document.getElementById('launch_progress_label').style.width = 53.21
-        
     }
 
 }, false)
