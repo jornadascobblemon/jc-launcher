@@ -1,12 +1,11 @@
 # Custom Language File for Launcher Customizer
 
 [ejs.app]
-title = "Kingdom Launcher"
+title = "Jornadas Cobblemon"
 
 [ejs.landing]
 mediaYouTubeURL = "https://www.youtube.com/@samusalvador"
 mediaDiscordURL = "https://discord.gg/jornadascobblemon"
-mediaStoreURL = ""
 
 [ejs.settings]
 sourceGithubLink = "https://github.com/Wirizada/launcher-releases"

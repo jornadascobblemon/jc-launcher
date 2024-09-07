@@ -1,13 +1,13 @@
 {
-  "name": "kingdomlauncher",
-  "version": "1.0.0",
-  "productName": "kingdom-launcher",
+  "name": "jornadascobblemonlauncher",
+  "version": "1.0.2",
+  "productName": "Jornadas-Cobblemon-Launcher",
   "description": "Modded Minecraft Launcher",
-  "author": "Kingdom",
+  "author": "Jornadas Cobblemon",
   "license": "MIT",
-  "homepage": "https://github.com/Wirizada/kingdom-update.git",
+  "homepage": "https://github.com/jornadascobblemon/Atualizacoes-JC.git",
   "bugs": {
-    "url": "https://github.com/Wirizada/kingdom-update.git"
+    "url": "https://github.com/jornadascobblemon/Atualizacoes-JC.git"
   },
   "private": true,
   "main": "index.js",
@@ -46,6 +46,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Wirizada/kingdom-update.git"
+    "url": "git+https://github.com/jornadascobblemon/Atualizacoes-JC.git"
   }
 }
