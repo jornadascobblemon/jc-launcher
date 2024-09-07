@@ -51,11 +51,11 @@ if(!isDev){
                 // Definir URLs de download baseados na plataforma
                 let downloadUrl = null
                 if(process.platform === 'win32'){
-                    downloadUrl = `https://github.com/jornadascobblemon/Atualizacoes-JC/releases/download/${info.version}/Jornadas-Cobblemon-setup-${info.version}-x64.exe`
+                    downloadUrl = `https://github.com/Wirizada/kingdom-update/releases/download/${info.version}/Kingdom-setup-${info.version}-x64.exe`
                 } else if(process.platform === 'darwin'){
-                    downloadUrl = `https://github.com/jornadascobblemon/Atualizacoes-JC/releases/download/${info.version}/Jornadas-Cobblemon-setup-${info.version}.dmg`
+                    downloadUrl = `https://github.com/Wirizada/kingdom-update/releases/download/${info.version}/Kingdom-setup-${info.version}.dmg`
                 } else if(process.platform === 'linux'){
-                    downloadUrl = `https://github.com/jornadascobblemon/Atualizacoes-JC/releases/download/${info.version}/Jornadas-Cobblemon-setup-${info.version}.AppImage`
+                    downloadUrl = `https://github.com/Wirizada/kingdom-update/releases/download/${info.version}/Kingdom-setup-${info.version}.AppImage`
                 }
 
                 if(downloadUrl){

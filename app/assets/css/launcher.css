@@ -559,7 +559,7 @@ body, button {
     }
 }
 
-/* Login text input styles. */
+ styles. */
 .loginField {
     font-family: 'Avenir Book';
     background: none;
@@ -1670,8 +1670,8 @@ input:checked + .toggleSwitchSlider:before {
 /* Button to switch server configurations on the mods tab. */
 .settingsSwitchServerButton {
     opacity: 0;
-    border: 1px solid #064fde; /* Cor original */
-    color: #064fde; /* Cor original */
+    border: 1px solid #a40021; /* Tom de vermelho escuro */
+    color: #a40021; /* Tom de vermelho escuro */
     background: none;
     font-size: 12px;
     border-radius: 3px;
@@ -1683,16 +1683,17 @@ input:checked + .toggleSwitchSlider:before {
 
 .settingsSwitchServerButton:hover,
 .settingsSwitchServerButton:focus {
-    box-shadow: 0px 0px 20px #064fde; /* Cor original */
-    background: rgba(6, 79, 222, 0.25); /* Azul com 25% de opacidade */
+    box-shadow: 0px 0px 20px #a40021; /* Tom de vermelho escuro */
+    background: rgba(164, 0, 33, 0.25); /* Vermelho escuro com 25% de opacidade */
 }
 
 .settingsSwitchServerButton:active {
-    box-shadow: 0px 0px 20px #0033a0; /* Tom escuro de azul */
-    background: rgba(0, 51, 160, 0.25); /* Azul escuro com 25% de opacidade */
-    border: 1px solid #0033a0; /* Tom escuro de azul */
-    color: #0033a0; /* Tom escuro de azul */
+    box-shadow: 0px 0px 20px #850017; /* Tom mais escuro de vermelho */
+    background: rgba(133, 0, 23, 0.25); /* Vermelho mais escuro com 25% de opacidade */
+    border: 1px solid #850017; /* Tom mais escuro de vermelho */
+    color: #850017; /* Tom mais escuro de vermelho */
 }
+
 
 .settingsSelServContainer:hover .settingsSwitchServerButton {
     opacity: 1;
@@ -2495,8 +2496,25 @@ input:checked + .toggleSwitchSlider:before {
 #landingContainer > #lower {
     height: 23%;
     display: flex;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    background-color: rgba(0, 0, 0, 0.75); /* Fundo sólido com a mesma intensidade do gradiente */
+    position: relative; /* Necessário para posicionar o pseudo-elemento */
+    width: 100%; /* Garantir que a borda se estenda por toda a largura */
+    box-sizing: border-box; /* Inclui a borda na largura total do elemento */
 }
+
+#landingContainer > #lower::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px; /* Altura da borda */
+    background: linear-gradient(to right, #a40021, #d1001c); /* Gradiente da borda */
+    z-index: 1; /* Coloca o pseudo-elemento acima do fundo do elemento */
+}
+
+
+
 #landingContainer > #lower > #left {
     position: relative;
     transition: top 2s ease;
@@ -2527,7 +2545,7 @@ input:checked + .toggleSwitchSlider:before {
     position: relative;
     z-index: 500;
     transition: top 2s ease;
-    top: 10px;
+    top: 40px;
 }
 #landingContainer > #lower > #right {
     position: relative;
@@ -3035,15 +3053,19 @@ input:checked + .toggleSwitchSlider:before {
 /* Social media icon content container. */
 #mediaContent {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: flex-end; /* Alinha os ícones à direita */
     align-items: center; /* Alinha os ícones verticalmente no centro */
     margin: 0; /* Remove margem para garantir o alinhamento correto */
     padding: 0; /* Remove padding se houver */
     width: auto; /* Ajusta a largura conforme o conteúdo */
-    margin-left: 200%;
-    padding-top: 20%; ;
+    padding-top: 20%; /* Ajusta o padding superior */
+    margin-top: 30px; /* Move o contêiner para baixo, ajuste conforme necessário */
+    gap: 10px; /* Espaçamento de 10px entre os ícones, ajuste conforme necessário */
+    position: relative; /* Necessário para ajustar o alinhamento à esquerda */
+    left: -20px; /* Move o conteúdo 20px para a esquerda, ajuste conforme necessário */
 }
+
 
 /* Social Media Icon division containers. */
 /* #internalMedia, #externalMedia {
@@ -3181,6 +3203,16 @@ input:checked + .toggleSwitchSlider:before {
 #discordSVG:active {
     fill: #657ac4;
 }
+
+#bagSVG:hover,
+#bagURL:focus #bagSVG {
+    fill: #b0b0b0; /* Cinza claro ao passar o mouse ou focar */
+}
+
+#bagSVG:active {
+    fill: #808080; /* Cinza mais escuro ao clicar */
+}
+
 
 /*******************************************************************************
  *                                                                             *
@@ -3416,7 +3448,7 @@ input:checked + .toggleSwitchSlider:before {
     font-weight: bold; /* font-bold */
     text-transform: uppercase; /* uppercase */
     border: none;
-    background-color: #064fde; /* bg-[#064fde] */
+    background-color: #a40021; /* Cor de fundo vermelho escuro */
     padding-top: 0.6rem; /* py-3 */
     padding-bottom: 0.6rem; /* py-3 */
     padding-left: 4.0rem; /* px-14 */
@@ -3429,14 +3461,17 @@ input:checked + .toggleSwitchSlider:before {
     transition: all 0.2s; /* transition-all duration-200 */
     font-family: 'THEBOLDFONT', sans-serif;
 }
+
 #launch_button:hover,
 #launch_button:focus {
-    box-shadow: 0 0 15px 0 #064fde; /* hover:shadow-[0_0px_30px_0px_#064fde] */
+    box-shadow: 0 0 15px 0 #a40021; /* hover:shadow-[0_0px_30px_0px_#a40021] */
 }
+
 #launch_button:active {
     color: #c7c7c7;
     text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7;
 }
+
 #launch_button:disabled {
     color: #c7c7c7;
     cursor: default;
@@ -3446,7 +3481,7 @@ input:checked + .toggleSwitchSlider:before {
     font-weight: bold; /* font-bold */
     text-transform: uppercase; /* uppercase */
     border: none;
-    background-color: #064fde; /* bg-[#064fde] */
+    background-color: #a40021; /* Cor de fundo vermelho escuro */
     padding-top: 0.6rem; /* py-3 */
     padding-bottom: 0.6rem; /* py-3 */
     padding-left: 3.2rem; /* px-14 */
@@ -3804,11 +3839,24 @@ input:checked + .toggleSwitchSlider:before {
 /* Server listing image. */
 .serverListingImg {
     margin: 0px 10px 0px 5px;
-    border: 2px solid #064fde;
+    border: 4px solid #a40021; /* Vermelho escuro mais destacado */
+    border-radius: 50%;
     height: 50px;
     width: 50px;
-    border-radius: 50%;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Sombra para efeito de profundidade */
+    background-color: #3a3a3a; /* Fundo cinza escuro para um efeito de metal ou pedra */
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%); /* Gradiente para efeito de brilho */
+    border: 4px solid #a40021; /* Borda vermelha escura mais grossa */
 }
+
+/* Efeito ao passar o mouse para um toque de luz */
+.serverListingImg:hover {
+    border-color: #850017; /* Tom mais escuro de vermelho para o efeito hover */
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.7); /* Sombra mais intensa */
+    background-color: #2d2d2d; /* Fundo escurecido para efeito de hover */
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.5) 100%); /* Gradiente mais intenso */
+}
+
 
 /* Content container for the server listing's details. */
 .serverListingDetails {
