@@ -220,7 +220,7 @@ body, button {
  *                                                                             *
  ******************************************************************************/
 
-#welcomeContainer {
+ #welcomeContainer {
     position: relative;
     display: flex;
     justify-content: center;
@@ -278,12 +278,8 @@ body, button {
 */
 
 #welcomeImageSeal {
-    border-radius: 50%;
-    border: 2px solid #cad7e1;
-    background: rgba(1, 2, 1, 0.5);
     height: 125px;
     width: 125px;
-    box-shadow: 0px 0px 10px 0px rgb(0, 0, 0);
     margin-bottom: 5%;
     margin-top: 10%;
 }
@@ -294,13 +290,13 @@ body, button {
     color: white;
     margin-bottom: 25px;
     letter-spacing: 1px;
-    font-size: 20px;
+    font-size: 22px;
     text-shadow: white 0px 0px 0px;
 }
 
 #welcomeDescription {
     text-align: justify;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 100;
     text-shadow: rgba(255, 255, 255, 0.75) 0px 0px 20px
 }
@@ -316,13 +312,11 @@ body, button {
 #welcomeButton {
     background: none;
     font-weight: bold;
-    letter-spacing: 2px;
     border: none;
     padding: 15px 5px;
     margin: 10px 0px;
     cursor: pointer;
     position: relative;
-    right: -20px;
     transition: 0.5s ease;
     margin-top: 5%;
     margin-bottom: -5%;
@@ -367,6 +361,7 @@ body, button {
     display: flex;
     align-items: center;
 }
+
 
 /*******************************************************************************
  *                                                                             *

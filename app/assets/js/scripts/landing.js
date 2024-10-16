@@ -125,6 +125,14 @@ document.getElementById('launch_button').addEventListener('click', async functio
     launchButton.disabled = true;
     launchButton.style.cursor = 'default';
     launchButton.removeEventListener('click', handleClick);
+
+        // Reativar o botão após 10 minutos
+    setTimeout(() => {
+        launchButton.innerText = 'JOGAR';
+        launchButton.disabled = false;
+        launchButton.style.cursor = 'pointer';
+        launchButton.addEventListener('click', handleClick);
+    }, 600000); // 10 minutos de atraso para reativar o botão
 });
 
 

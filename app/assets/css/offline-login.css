@@ -1,9 +1,52 @@
-/* Login form. */
 #loginOfflineForm {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo translúcido */
+    padding: 30px; /* Espaçamento interno */
+    border-radius: 12px; /* Bordas arredondadas */
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.6); /* Sombra para destaque */
+    max-width: 400px; /* Largura máxima */
+    width: 100%; /* Largura total até o máximo */
+    margin: 0 auto; /* Centralização horizontal */
+}
+
+#loginOfflineForm input[type="text"],
+#loginOfflineForm input[type="password"] {
+    width: 100%; /* Largura completa */
+    max-width: 350px; /* Largura máxima */
+    padding: 12px; /* Espaçamento interno */
+    margin: 15px 0; /* Espaçamento entre os inputs */
+    border: 2px solid #0033a0; /* Borda azul */
+    border-radius: 8px; /* Bordas arredondadas */
+    background-color: rgba(255, 255, 255, 0.1); /* Fundo transparente */
+    color: #ffffff; /* Cor do texto branca */
+    font-size: 16px; /* Tamanho do texto */
+    text-align: center; /* Texto centralizado */
+    box-shadow: inset 0px 1px 3px rgba(255, 255, 255, 0.2); /* Sombra interna sutil */
+    transition: all 0.3s ease; /* Transição suave */
+}
+
+/* Foco nos inputs */
+#loginOfflineForm input[type="text"]:focus,
+#loginOfflineForm input[type="password"]:focus {
+    border-color: #0047a5; /* Borda azul mais clara ao focar */
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5); /* Sombra clara ao focar */
+    outline: none; /* Remove a borda padrão */
+}
+
+/* Placeholder (texto dentro dos inputs antes do usuário digitar) */
+#loginOfflineForm input[type="text"]::placeholder,
+#loginOfflineForm input[type="password"]::placeholder {
+    color: rgba(255, 255, 255, 0.8); /* Placeholder branco translúcido */
+    font-size: 18px; /* Aumenta o tamanho do placeholder */
+    font-style: normal; /* Remove o itálico */
+}
+
+/* Ajustes para botões dentro do formulário */
+#loginOfflineForm button {
+    margin-top: 20px; /* Espaçamento acima dos botões */
 }
 
 /* Login cancel button styles. */
@@ -78,50 +121,54 @@
     color: #8b8b8b;
 }
 
-
-/* Login button styles. */
+/* Login button styles (Medieval with Light Dark Blue) */
 #loginOfflineButton {
-    background: #064fde; /* Cor de fundo azul */
-    color: #ffffff; /* Cor do texto branco */
+    background: #0033a0; /* Cor de fundo azul */
+    color: #ffffff; /* Cor do texto branca */
     font-weight: bold;
     letter-spacing: 2px;
-    border: none;
-    border-radius: 5px; /* Bordas arredondadas */
+    border: 2px solid #002377; /* Borda metálica escura */
+    border-radius: 8px; /* Bordas arredondadas mais acentuadas */
     padding: 15px 30px; /* Ajuste no espaçamento interno */
     margin: 10px 0px;
     cursor: pointer;
     position: relative;
-
-    transition: all 0.3s ease; /* Transição suave para todos os efeitos */
     text-transform: uppercase; /* Texto em maiúsculas */
     font-size: 14px; /* Tamanho da fonte */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra leve */
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5), 0px 4px 8px rgba(0, 0, 0, 0.5); /* Sombra interna e externa para efeito robusto */
+    transition: all 0.3s ease; /* Transição suave para todos os efeitos */
 }
 
+/* Estado desativado do botão */
 #loginOfflineButton:disabled {
     color: rgba(255, 255, 255, 0.75); /* Cor mais clara quando desativado */
-    background: rgba(6, 79, 222, 0.5); /* Cor de fundo mais clara quando desativado */
+    background: rgba(0, 51, 160, 0.5); /* Cor de fundo mais clara quando desativado */
+    border-color: rgba(0, 35, 119, 0.5); /* Cor da borda mais clara quando desativado */
     pointer-events: none;
 }
 
+/* Estado de carregamento do botão */
 #loginOfflineButton[loading] {
     color: #fff;
-    background: #064fde; /* Garantir fundo azul durante carregamento */
+    background: #0033a0; /* Garantir fundo azul durante carregamento */
 }
 
+/* Efeito hover */
 #loginOfflineButton:hover,
 #loginOfflineButton:focus {
-    background: #0536a8; /* Azul mais escuro ao passar o mouse ou focar */
-    text-shadow: 0px 0px 20px #ffffff; /* Sombra do texto branca */
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais pronunciada ao passar o mouse */
+    background: #0047a5; /* Azul mais claro ao passar o mouse ou focar */
+    border-color: #0033a0; /* Cor da borda mais clara ao passar o mouse */
+    text-shadow: 0px 0px 5px #000; /* Sombra do texto mais pronunciada */
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.7), 0px 6px 12px rgba(0, 0, 0, 0.7); /* Efeito de luz mais intenso */
     outline: none;
 }
 
+/* Efeito ativo */
 #loginOfflineButton:active {
-    background: #043a8e; /* Azul ainda mais escuro quando clicado */
+    background: #002377; /* Azul ainda mais escuro quando clicado */
     color: rgba(255, 255, 255, 0.9); /* Cor do texto levemente mais clara quando ativo */
-    text-shadow: 0px 0px 15px rgba(255, 255, 255, 0.9); /* Sombra do texto mais intensa */
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reduzida ao clicar */
+    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.9); /* Sombra do texto mais intensa */
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.7), 0px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra reduzida ao clicar */
     transform: translateY(2px); /* Efeito de pressão visual */
 }
 
@@ -136,16 +183,16 @@
 }
 #loginOfflineButton:hover #loginSVG,
 #loginOfflineButton:focus #loginSVG {
-    -webkit-filter: drop-shadow(0px 0px 2px #fff);
+    -webkit-filter: drop-shadow(0px 0px 2px #000); /* Sombra mais pronunciada para o ícone */
 }
 #loginOfflineButton:active #loginSVG .arrowLine {
-    stroke: #c7c7c7;
+    stroke: #999; /* Cor do ícone mais clara ao clicar */
 }
 #loginOfflineButton:active #loginSVG {
-    -webkit-filter: drop-shadow(0px 0px 2px #c7c7c7);
+    -webkit-filter: drop-shadow(0px 0px 2px #999); /* Sombra mais intensa para o ícone ao clicar */
 }
 #loginOfflineButton:disabled #loginSVG .arrowLine {
-    stroke: rgba(255, 255, 255, 0.75);
+    stroke: rgba(255, 255, 255, 0.75); /* Cor do ícone mais clara quando desativado */
 }
 
 #loginOfflineButtonContent {
