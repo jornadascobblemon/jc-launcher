@@ -8,8 +8,8 @@ mediaYouTubeURL = "https://www.youtube.com/@samusalvador"
 mediaDiscordURL = "https://discord.gg/jornadascobblemon"
 
 [ejs.settings]
-sourceGithubLink = "https://github.com/Wirizada/launcher-releases"
-supportLink = "https://github.com/Wirizada/launcher-releases/issues"
+sourceGithubLink = "https://github.com/jornadacobblemon/jc-launcher"
+supportLink = "https://discord.com/channels/1110036486700670978/1223368003396304946"
 
 [ejs.welcome]
 welcomeHeader = "Bem Vindo ao Jornadas Cobblemon"

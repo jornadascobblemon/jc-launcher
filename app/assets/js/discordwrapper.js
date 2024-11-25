@@ -20,7 +20,7 @@ exports.initRPC = function(){
         buttons: [
             {
                 label: "Entre em nosso Discord!",
-                url: "https://discord.gg/fraternidadegamer"
+                url: "https://discord.gg/jornadascobblemon"
               },
               {
                 label: "Acesse nosso site!",
