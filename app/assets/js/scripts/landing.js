@@ -107,39 +107,39 @@ window.addEventListener('DOMContentLoaded', () => {
 const handleClick = async function (e) {
     loggerLanding.info('Launching game..')
     try {
-    const server = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
-    const jExe = ConfigManager.getJavaExecutable(ConfigManager.getSelectedServer())
-    if(jExe == null){
-        await asyncSystemScan(server.effectiveJavaOptions)
-    } else {
-
-        setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
-        toggleLaunchArea(true)
-        setLaunchPercentage(0, 100)
-
-        const details = await validateSelectedJvm(ensureJavaDirIsRoot(jExe), server.effectiveJavaOptions.supported)
-        if(details != null){
-            loggerLanding.info('Jvm Details', details)
-            await dlAsync()
-
-        } else {
+        const server = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
+        const jExe = ConfigManager.getJavaExecutable(ConfigManager.getSelectedServer())
+        if(jExe == null){
             await asyncSystemScan(server.effectiveJavaOptions)
-        }
-    }
+        } else {
 
-    // Alterar texto e desativar funcionalidade após todas as operações
-    const launchButton = document.getElementById('launch_button');
-    launchButton.innerText = 'DIVIRTA-SE!';
-    launchButton.disabled = true;
-    launchButton.style.cursor = 'default';
-    launchButton.removeEventListener('click', handleClick);
+            setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
+            toggleLaunchArea(true)
+            setLaunchPercentage(0, 100)
+
+            const details = await validateSelectedJvm(ensureJavaDirIsRoot(jExe), server.effectiveJavaOptions.supported)
+            if(details != null){
+                loggerLanding.info('Jvm Details', details)
+                await dlAsync()
+
+            } else {
+                await asyncSystemScan(server.effectiveJavaOptions)
+            }
+        }
+
+        // Alterar texto e desativar funcionalidade após todas as operações
+        const launchButton = document.getElementById('launch_button');
+        launchButton.innerText = 'DIVIRTA-SE!';
+        launchButton.disabled = true;
+        launchButton.style.cursor = 'default';
+        launchButton.removeEventListener('click', handleClick);
 
         // Reativa o botão quando o jogo é fechado
         proc.on('close', () => {
-        launchButton.innerText = 'JOGAR';
-        launchButton.disabled = false;
-        launchButton.style.cursor = 'pointer';
-        launchButton.addEventListener('click', handleClick);
+            launchButton.innerText = 'JOGAR';
+            launchButton.disabled = false;
+            launchButton.style.cursor = 'pointer';
+            launchButton.addEventListener('click', handleClick);
         });
     } catch(err) {
         loggerLanding.error('Unhandled error in during launch process.', err)
@@ -263,9 +263,8 @@ const refreshServerStatus = async (fade = false) => {
     let pVal = Lang.queryJS('landing.serverStatus.offline')
 
     try {
-        const serverURL = new URL('my://jogar.jornadascobblemon.com.br:25565')
 
-        const servStat = await getServerStatus(47, serverURL.hostname, serverURL.port)
+        const servStat = await getServerStatus(47, serv.hostname, serv.port)
         console.log(servStat)
         pLabel = Lang.queryJS('landing.serverStatus.players')
         pVal = servStat.players.online + '/' + servStat.players.max
