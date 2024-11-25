@@ -3431,13 +3431,13 @@ input:checked + .toggleSwitchSlider:before {
 }
 
 /* The launch button. */
-/* The launch button. */
 #launch_button {
     margin-top: 2.4rem;
     font-size: 2.0rem; /* text-xl */
     font-weight: bold; /* font-bold */
     text-transform: uppercase; /* uppercase */
     border: none;
+    cursor: pointer;
     background-color: #064fde; /* bg-[#064fde] */
     padding-top: 0.6rem; /* py-3 */
     padding-bottom: 0.6rem; /* py-3 */
