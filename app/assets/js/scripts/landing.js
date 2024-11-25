@@ -98,9 +98,11 @@ function setLaunchEnabled(val){
     document.getElementById('launch_button').disabled = !val
 }
 
-// Bind launch button
-// Bind launch button
-document.getElementById('launch_button').addEventListener('click', async function handleClick(e) {
+// Fade in the body after the page has loaded.
+window.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('fade-in');
+});
+
     loggerLanding.info('Launching game..')
     const server = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
     const jExe = ConfigManager.getJavaExecutable(ConfigManager.getSelectedServer())
