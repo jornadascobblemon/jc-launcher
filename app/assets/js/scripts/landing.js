@@ -155,6 +155,16 @@ document.getElementById('launch_button').addEventListener('click', handleClick);
 document.getElementById('settingsMediaButton').onclick = async e => {
     await prepareSettings()
     switchView(getCurrentView(), VIEWS.settings)
+    
+    // Dim the frame bar as well
+    const frameBar = document.getElementById('frameBar')
+    frameBar.classList.add('frameBar-active');
+    frameBar.classList.add('frameBar-fadeIn');
+
+    // on transition end, remove the frameBar-fadeIn class
+    frameBar.addEventListener('transitionend', () => {
+        frameBar.classList.remove('frameBar-fadeIn');
+    });
 }
 
 // Bind avatar overlay button.
