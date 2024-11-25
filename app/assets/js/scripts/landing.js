@@ -103,19 +103,25 @@ window.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('fade-in');
 });
 
+// Function to handle the launch button click
+const handleClick = async function (e) {
     loggerLanding.info('Launching game..')
+    try {
     const server = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
     const jExe = ConfigManager.getJavaExecutable(ConfigManager.getSelectedServer())
     if(jExe == null){
         await asyncSystemScan(server.effectiveJavaOptions)
     } else {
+
         setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
         toggleLaunchArea(true)
         setLaunchPercentage(0, 100)
+
         const details = await validateSelectedJvm(ensureJavaDirIsRoot(jExe), server.effectiveJavaOptions.supported)
         if(details != null){
             loggerLanding.info('Jvm Details', details)
             await dlAsync()
+
         } else {
             await asyncSystemScan(server.effectiveJavaOptions)
         }
@@ -128,14 +134,21 @@ window.addEventListener('DOMContentLoaded', () => {
     launchButton.style.cursor = 'default';
     launchButton.removeEventListener('click', handleClick);
 
-        // Reativar o botão após 10 minutos
-    setTimeout(() => {
+        // Reativa o botão quando o jogo é fechado
+        proc.on('close', () => {
         launchButton.innerText = 'JOGAR';
         launchButton.disabled = false;
         launchButton.style.cursor = 'pointer';
         launchButton.addEventListener('click', handleClick);
-    }, 600000); // 10 minutos de atraso para reativar o botão
-});
+        });
+    } catch(err) {
+        loggerLanding.error('Unhandled error in during launch process.', err)
+        showLaunchFailure(Lang.queryJS('landing.launch.failureTitle'), Lang.queryJS('landing.launch.failureText'))
+    }
+};
+
+// Bind launch button
+document.getElementById('launch_button').addEventListener('click', handleClick);
 
 
 // Bind settings button
