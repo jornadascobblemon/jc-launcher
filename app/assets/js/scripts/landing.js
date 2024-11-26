@@ -104,7 +104,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // Function to handle the launch button click
-const handleClick = async function (e) {
+const handleClickLaunchButton = async function (e) {
     loggerLanding.info('Launching game..')
     try {
         const server = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
@@ -131,16 +131,7 @@ const handleClick = async function (e) {
         const launchButton = document.getElementById('launch_button');
         launchButton.innerText = 'DIVIRTA-SE!';
         launchButton.disabled = true;
-        launchButton.style.cursor = 'default';
-        launchButton.removeEventListener('click', handleClick);
-
-        // Reativa o botão quando o jogo é fechado
-        proc.on('close', () => {
-            launchButton.innerText = 'JOGAR';
-            launchButton.disabled = false;
-            launchButton.style.cursor = 'pointer';
-            launchButton.addEventListener('click', handleClick);
-        });
+        launchButton.removeEventListener('click', handleClickLaunchButton);
     } catch(err) {
         loggerLanding.error('Unhandled error in during launch process.', err)
         showLaunchFailure(Lang.queryJS('landing.launch.failureTitle'), Lang.queryJS('landing.launch.failureText'))
@@ -148,7 +139,7 @@ const handleClick = async function (e) {
 };
 
 // Bind launch button
-document.getElementById('launch_button').addEventListener('click', handleClick);
+document.getElementById('launch_button').addEventListener('click', handleClickLaunchButton);
 
 
 // Bind settings button
@@ -371,6 +362,12 @@ async function asyncSystemScan(effectiveJavaOptions, launchAfter = true){
                 setOverlayHandler(() => {
                     toggleLaunchArea(false)
                     toggleOverlay(false)
+                    
+                    // Reativa o botão quando o usuário cancela a instalação do Java
+                    const launchButton = document.getElementById('launch_button');
+                    launchButton.innerText = 'JOGAR';
+                    launchButton.disabled = false;
+                    launchButton.addEventListener('click', handleClickLaunchButton);
                 })
                 setDismissHandler(() => {
                     toggleOverlay(false, true)
@@ -649,6 +646,13 @@ async function dlAsync(login = true) {
                 DiscordWrapper.initRPC(distro.rawDistribution.discord, serv.rawServer.discord)
                 hasRPC = true
                 proc.on('close', (code, signal) => {
+                    const launchButton = document.getElementById('launch_button');
+
+                    // Reativa o botão quando o jogo é fechado
+                    launchButton.innerText = 'JOGAR';
+                    launchButton.disabled = false;
+                    launchButton.addEventListener('click', handleClickLaunchButton);
+
                     loggerLaunchSuite.info('Shutting down Discord Rich Presence..')
                     DiscordWrapper.shutdownRPC()
                     hasRPC = false
