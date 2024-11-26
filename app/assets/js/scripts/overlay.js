@@ -66,6 +66,7 @@ function bindOverlayKeys(state, content, dismissable){
  * @param {string} content Optional. The content div to be shown.
  */
 function toggleOverlay(toggleState, dismissable = false, content = 'overlayContent'){
+    const frameBar = document.getElementById('frameBar')
     if(toggleState == null){
         toggleState = !document.getElementById('main').hasAttribute('overlay')
     }
@@ -75,7 +76,18 @@ function toggleOverlay(toggleState, dismissable = false, content = 'overlayConte
     }
     bindOverlayKeys(toggleState, content, dismissable)
     if(toggleState){
+        // Toggle overlay on
         document.getElementById('main').setAttribute('overlay', true)
+
+        // Dim the frame bar
+        frameBar.classList.add('frameBar-active');
+        frameBar.classList.add('frameBar-fade');
+    
+        // on transition end, remove the frameBar-fade class
+        frameBar.addEventListener('transitionend', () => {
+            frameBar.classList.remove('frameBar-fade');
+        });
+
         // Make things untabbable.
         $('#main *').attr('tabindex', '-1')
         $('#' + content).parent().children().hide()
@@ -86,19 +98,33 @@ function toggleOverlay(toggleState, dismissable = false, content = 'overlayConte
             $('#overlayDismiss').hide()
         }
         $('#overlayContainer').fadeIn({
-            duration: 250,
+            duration: 500,
             start: () => {
                 if(getCurrentView() === VIEWS.settings){
                     document.getElementById('settingsContainer').style.backgroundColor = 'transparent'
                 }
             }
         })
+
+
     } else {
+        // Toggle overlay off
         document.getElementById('main').removeAttribute('overlay')
+
+        // Dim the frame bar
+        frameBar.classList.remove('frameBar-fade500ms');
+        frameBar.classList.add('frameBar-fade');
+        frameBar.classList.remove('frameBar-active');
+    
+        // on transition end, remove the frameBar-fade class
+        frameBar.addEventListener('transitionend', () => {
+            frameBar.classList.remove('frameBar-fade');
+        });
+        
         // Make things tabbable.
         $('#main *').removeAttr('tabindex')
         $('#overlayContainer').fadeOut({
-            duration: 250,
+            duration: 500,
             start: () => {
                 if(getCurrentView() === VIEWS.settings){
                     document.getElementById('settingsContainer').style.backgroundColor = 'rgba(0, 0, 0, 0.50)'

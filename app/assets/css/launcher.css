@@ -79,11 +79,11 @@ body, button {
     background-color: rgba(0, 0, 0, 0.90);
 }
 
-.framebar-fadeIn {
+.framebar-fade500ms {
     transition: background-color 0.5s cubic-bezier(.02, .01, .47, 1) 0.5s;
 }
 
-.framebar-fadeOut {
+.framebar-fade {
     transition: background-color 0.5s cubic-bezier(.02, .01, .47, 1);
 }
 

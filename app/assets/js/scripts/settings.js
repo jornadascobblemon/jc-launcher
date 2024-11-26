@@ -336,13 +336,13 @@ settingsNavDone.onclick = () => {
 
     // Return the frame bar to its original state.
     const frameBar = document.getElementById('frameBar')
-    frameBar.classList.remove('frameBar-fadeIn');
-    frameBar.classList.add('frameBar-fadeOut');
+    frameBar.classList.remove('frameBar-fade500ms');
+    frameBar.classList.add('frameBar-fade');
     frameBar.classList.remove('frameBar-active');
 
-    // on transition end, remove the frameBar-fadeOut class
+    // on transition end, remove the frameBar-fade class
     frameBar.addEventListener('transitionend', () => {
-        frameBar.classList.remove('frameBar-fadeOut');
+        frameBar.classList.remove('frameBar-fade');
     });
 }
 

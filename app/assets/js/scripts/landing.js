@@ -150,11 +150,11 @@ document.getElementById('settingsMediaButton').onclick = async e => {
     // Dim the frame bar as well
     const frameBar = document.getElementById('frameBar')
     frameBar.classList.add('frameBar-active');
-    frameBar.classList.add('frameBar-fadeIn');
+    frameBar.classList.add('frameBar-fade500ms');
 
-    // on transition end, remove the frameBar-fadeIn class
+    // on transition end, remove the frameBar-fade500ms class
     frameBar.addEventListener('transitionend', () => {
-        frameBar.classList.remove('frameBar-fadeIn');
+        frameBar.classList.remove('frameBar-fade500ms');
     });
 }
 
