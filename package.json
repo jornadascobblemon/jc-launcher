@@ -14,7 +14,9 @@
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder build",
-    "dist:win": "npm run dist -- -w",
+    "dist:win-versioned": "npm run dist -- -w",
+    "dist:win-no-version": "npm run dist -- -w -c.nsis.artifactName=Jornadas-Cobblemon-Windows-Setup.exe",
+    "dist:win": "npm run dist:win-no-version && npm run dist:win-versioned",
     "dist:mac": "npm run dist -- -m",
     "dist:linux": "npm run dist -- -l",
     "lint": "eslint --config .eslintrc.json ."
