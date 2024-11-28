@@ -48,9 +48,9 @@
                 </div>
             </div>
 
-            <div class="settingsAutAccountTypeContainer">
-                <div class="settingsAuhAccountTypeHeader">
-                    <div class="settngsAuthAccountTypeHeaderLeft">
+            <div class="settingsAuthAccountTypeContainer" style="display: none;">
+                <div class="settingsAuthAccountTypeHeader">
+                    <div class="settingsAuthAccountTypeHeaderLeft">
                     </div>
                     <div class="settingsAuthAccountTypeHeaderRight">
                     </div>
@@ -65,10 +65,10 @@
                 <div class="settingsAuthAccountTypeHeader">
                     <div class="settingsAuthAccountTypeHeaderLeft">
                         <img src="./assets/images/steve.png" width="22px" height="22px">
-                        <span>Com Nick</span>
+                        <span><%- lang('settings.offlineAccount') %></span>
                     </div>
                     <div class="settingsAuthAccountTypeHeaderRight">
-                        <button class="settingsAddAuthAccount" id="settingsAddOfflineAccount">+ Adicionar uma conta por Nick</button>
+                        <button class="settingsAddAuthAccount" id="settingsAddOfflineAccount"><%- lang('settings.addOfflineAccount') %></button>
                     </div>
                 </div>
                 
@@ -130,7 +130,7 @@
                 <span class="settingsTabHeaderText"><%- lang('settings.tabModsHeaderText') %></span>
                 <span class="settingsTabHeaderDesc"><%- lang('settings.tabModsHeaderDesc') %></span>
             </div>
-            <div class="settingsSelServContainer">
+            <div class="settingsSelServContainer" style="display: none;">
                 <div class="settingsSelServContent">
 
                 </div>
@@ -180,7 +180,7 @@
                 <span class="settingsTabHeaderText"><%- lang('settings.tabJavaHeaderText') %></span>
                 <span class="settingsTabHeaderDesc"><%- lang('settings.tabJavaHeaderDesc') %></span>
             </div>
-            <div class="settingsSelServContainer">
+            <div class="settingsSelServContainer" style="display: none;">
                 <div class="settingsSelServContent">
 
                 </div>
@@ -337,9 +337,9 @@
                     </div>
                 </div>
                 <div id="settingsAboutButtons">
-                    <a href="<%- lang('settings.sourceGithubLink') %>" id="settingsAboutSourceButton" class="settingsAboutButton"><%- lang('settings.sourceGithub') %></a>
+                    <!-- <a href="<%- lang('settings.sourceGithubLink') %>" id="settingsAboutSourceButton" class="settingsAboutButton"><%- lang('settings.sourceGithub') %></a> -->
                     <!-- The following must be included in third-party usage. -->
-                    <!-- <a href="https://github.com/dscalzi/HeliosLauncher" id="settingsAboutSourceButton" class="settingsAboutButton">Original Source</a> -->
+                    <a href="https://github.com/dscalzi/HeliosLauncher" id="settingsAboutSourceButton" class="settingsAboutButton">Original Source</a>
                     <a href="<%- lang('settings.supportLink') %>" id="settingsAboutSupportButton" class="settingsAboutButton"><%- lang('settings.support') %></a>
                     <a href="#" id="settingsAboutDevToolsButton" class="settingsAboutButton"><%- lang('settings.devToolsConsole') %></a>
                 </div>

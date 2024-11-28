@@ -6,8 +6,8 @@
                     <button id="avatarOverlay"><%- lang('landing.usernameEditButton') %></button>
                 </div>
                 <div id="user_content">
-                    <span id="user_text"><%- lang('landing.usernamePlaceholder') %><</span>
-                    <p class="subname">Minecraft Account</p>
+                    <span id="user_text"><%- lang('landing.usernamePlaceholder') %></span>
+                    <p class="subname"><%- lang('landing.minecraftAccount') %></p>
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
     <div id="lower">
         <div id="left">
             <div class="bot_wrapper">
-                <div id="content">
+                <div id="content" style="display: none;">
                     <div id="image_seal_container">
                         <img id="image_seal" src="assets/images/SealCircle.png"/>
                         <!-- <div id="updateAvailableTooltip">Atualização disponível</div> -->
@@ -62,7 +62,7 @@
             <div class="bot_wrapper">
                 <div id="content">
                     <div id="launch_content">
-                        <button id="launch_button">JOGAR</button>
+                        <button id="launch_button"><%- lang('landing.launchButton') %></button>
                     </div>
                     <div id="launch_details">
                         <div id="launch_details_left">
@@ -71,7 +71,7 @@
                         </div>
                         <div id="launch_details_right">
                             <progress id="launch_progress" value="22" max="100"></progress>
-                            <span id="launch_details_text" class="bot_label">Por favor, aguarde...</span>
+                            <span id="launch_details_text" class="bot_label"><%- lang('landing.launchDetails') %></span>
                         </div>
                     </div>
                 </div>

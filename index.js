@@ -12,6 +12,7 @@ const semver                            = require('semver')
 const { pathToFileURL }                 = require('url')
 const { AZURE_CLIENT_ID, MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR, SHELL_OPCODE } = require('./app/assets/js/ipcconstants')
 const LangLoader                        = require('./app/assets/js/langloader')
+const axios = require('axios')
 
 // Setup Lang
 LangLoader.setupLanguage()
@@ -224,8 +225,19 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGOUT, (ipcEvent, uuid, isLastAccount) => {
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
-function createWindow() {
+// Function to fetch Last-Modified header
+async function getLastModified(url) {
+    try {
+        const response = await axios.head(url);
+        const lastModified = response.headers['last-modified'];
+        return lastModified ? new Date(lastModified).getTime() : Date.now();
+    } catch (error) {
+        console.error(`Error fetching Last-Modified header: ${error}`);
+        return Date.now(); // Fallback to current timestamp
+    }
+}
 
+async function createWindow() {
     win = new BrowserWindow({
         width: 980,
         height: 552,
@@ -240,9 +252,16 @@ function createWindow() {
     })
     remoteMain.enable(win.webContents)
 
+    
+    // Fetch the Last-Modified timestamp of the background
+    const imageUrl = 'https://jornadascobblemon.wstr.fr/images/0.png'
+    const lastModified = await getLastModified(imageUrl)
+    const bodyBackgroundImageUrl = `${imageUrl}?v=${lastModified}`
+    
     const data = {
         bkid: Math.floor((Math.random() * fs.readdirSync(path.join(__dirname, 'app', 'assets', 'images', 'backgrounds')).length)),
-        lang: (str, placeHolders) => LangLoader.queryEJS(str, placeHolders)
+        lang: (str, placeHolders) => LangLoader.queryEJS(str, placeHolders),
+        bodyBackgroundImageUrl: bodyBackgroundImageUrl // Pass the image url to the ejs template
     }
     Object.entries(data).forEach(([key, val]) => ejse.data(key, val))
 

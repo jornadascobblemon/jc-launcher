@@ -1,6 +1,6 @@
 appId: 'jornadascobblemonlauncher'
 productName: 'Jornadas-Cobblemon'
-artifactName: '${productName}-setup-${version}.${ext}'
+artifactName: '${productName}-Setup-${version}.${ext}'
 
 copyright: 'Copyright © 2018-2022 Daniel Scalzi, Copyright © 2024 sch8402'
 
@@ -16,6 +16,7 @@ extraResources:
 # Windows Configuration
 win:
   icon: 'app/assets/images/SealCircle.ico'
+  artifactName: '${productName}-Windows-Setup-${version}.${ext}'
   target: 
     - target: 'nsis'
       arch: 'x64'

@@ -98,48 +98,64 @@ function setLaunchEnabled(val){
     document.getElementById('launch_button').disabled = !val
 }
 
-// Bind launch button
-// Bind launch button
-document.getElementById('launch_button').addEventListener('click', async function handleClick(e) {
-    loggerLanding.info('Launching game..')
-    const server = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
-    const jExe = ConfigManager.getJavaExecutable(ConfigManager.getSelectedServer())
-    if(jExe == null){
-        await asyncSystemScan(server.effectiveJavaOptions)
-    } else {
-        setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
-        toggleLaunchArea(true)
-        setLaunchPercentage(0, 100)
-        const details = await validateSelectedJvm(ensureJavaDirIsRoot(jExe), server.effectiveJavaOptions.supported)
-        if(details != null){
-            loggerLanding.info('Jvm Details', details)
-            await dlAsync()
-        } else {
-            await asyncSystemScan(server.effectiveJavaOptions)
-        }
-    }
-
-    // Alterar texto e desativar funcionalidade após todas as operações
-    const launchButton = document.getElementById('launch_button');
-    launchButton.innerText = 'DIVIRTA-SE!';
-    launchButton.disabled = true;
-    launchButton.style.cursor = 'default';
-    launchButton.removeEventListener('click', handleClick);
-
-        // Reativar o botão após 10 minutos
-    setTimeout(() => {
-        launchButton.innerText = 'JOGAR';
-        launchButton.disabled = false;
-        launchButton.style.cursor = 'pointer';
-        launchButton.addEventListener('click', handleClick);
-    }, 600000); // 10 minutos de atraso para reativar o botão
+// Fade in the body after the page has loaded.
+window.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('fade-in');
 });
+
+// Function to handle the launch button click
+const handleClickLaunchButton = async function (e) {
+    loggerLanding.info('Launching game..')
+    try {
+        const server = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
+        const jExe = ConfigManager.getJavaExecutable(ConfigManager.getSelectedServer())
+        if(jExe == null){
+            await asyncSystemScan(server.effectiveJavaOptions)
+        } else {
+
+            setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
+            toggleLaunchArea(true)
+            setLaunchPercentage(0, 100)
+
+            const details = await validateSelectedJvm(ensureJavaDirIsRoot(jExe), server.effectiveJavaOptions.supported)
+            if(details != null){
+                loggerLanding.info('Jvm Details', details)
+                await dlAsync()
+
+            } else {
+                await asyncSystemScan(server.effectiveJavaOptions)
+            }
+        }
+
+        // Alterar texto e desativar funcionalidade após todas as operações
+        const launchButton = document.getElementById('launch_button');
+        launchButton.innerText = 'DIVIRTA-SE!';
+        launchButton.disabled = true;
+        launchButton.removeEventListener('click', handleClickLaunchButton);
+    } catch(err) {
+        loggerLanding.error('Unhandled error in during launch process.', err)
+        showLaunchFailure(Lang.queryJS('landing.launch.failureTitle'), Lang.queryJS('landing.launch.failureText'))
+    }
+};
+
+// Bind launch button
+document.getElementById('launch_button').addEventListener('click', handleClickLaunchButton);
 
 
 // Bind settings button
 document.getElementById('settingsMediaButton').onclick = async e => {
     await prepareSettings()
     switchView(getCurrentView(), VIEWS.settings)
+    
+    // Dim the frame bar as well
+    const frameBar = document.getElementById('frameBar')
+    frameBar.classList.add('frameBar-active');
+    frameBar.classList.add('frameBar-fade500ms');
+
+    // on transition end, remove the frameBar-fade500ms class
+    frameBar.addEventListener('transitionend', () => {
+        frameBar.classList.remove('frameBar-fade500ms');
+    });
 }
 
 // Bind avatar overlay button.
@@ -248,9 +264,8 @@ const refreshServerStatus = async (fade = false) => {
     let pVal = Lang.queryJS('landing.serverStatus.offline')
 
     try {
-        const serverURL = new URL('my://jogar.jornadascobblemon.com.br:25565')
 
-        const servStat = await getServerStatus(47, serverURL.hostname, serverURL.port)
+        const servStat = await getServerStatus(47, serv.hostname, serv.port)
         console.log(servStat)
         pLabel = Lang.queryJS('landing.serverStatus.players')
         pVal = servStat.players.online + '/' + servStat.players.max
@@ -347,6 +362,12 @@ async function asyncSystemScan(effectiveJavaOptions, launchAfter = true){
                 setOverlayHandler(() => {
                     toggleLaunchArea(false)
                     toggleOverlay(false)
+                    
+                    // Reativa o botão quando o usuário cancela a instalação do Java
+                    const launchButton = document.getElementById('launch_button');
+                    launchButton.innerText = 'JOGAR';
+                    launchButton.disabled = false;
+                    launchButton.addEventListener('click', handleClickLaunchButton);
                 })
                 setDismissHandler(() => {
                     toggleOverlay(false, true)
@@ -625,6 +646,13 @@ async function dlAsync(login = true) {
                 DiscordWrapper.initRPC(distro.rawDistribution.discord, serv.rawServer.discord)
                 hasRPC = true
                 proc.on('close', (code, signal) => {
+                    const launchButton = document.getElementById('launch_button');
+
+                    // Reativa o botão quando o jogo é fechado
+                    launchButton.innerText = 'JOGAR';
+                    launchButton.disabled = false;
+                    launchButton.addEventListener('click', handleClickLaunchButton);
+
                     loggerLaunchSuite.info('Shutting down Discord Rich Presence..')
                     DiscordWrapper.shutdownRPC()
                     hasRPC = false

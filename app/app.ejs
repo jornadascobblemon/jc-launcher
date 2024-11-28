@@ -8,10 +8,15 @@
     <link type="text/css" rel="stylesheet" href="./assets/css/offline-login.css">
     <style>
         body {
-            /*background: url('assets/images/backgrounds/<%=bkid%>.jpg') no-repeat center center fixed;*/
-            background-image: url('https://jornadascobblemon.wstr.fr/images/0.png');
+            opacity: 0;
+            transition: opacity 2s ease;
+            background-image: url('<%= bodyBackgroundImageUrl %>');
             background-size: cover;
             -webkit-user-select: none;
+            user-select: none;
+        }
+        body.fade-in {
+            opacity: 1;
         }
         #main {
             display: none;
