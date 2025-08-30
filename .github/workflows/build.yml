@@ -34,11 +34,11 @@ jobs:
         run: npm ci
 
       # 4. Compila o aplicativo e publica no GitHub Releases
-      # REMOVEMOS os segredos da Apple (APPLE_ID, etc.) daqui
       - name: Compilar e Publicar
         env:
           # O token do GitHub continua sendo necessário para criar o release
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash # <--- CORREÇÃO APLICADA AQUI
         run: |
           if [ "${{ matrix.os }}" == "macos-latest" ]; then
             npm run dist:mac
