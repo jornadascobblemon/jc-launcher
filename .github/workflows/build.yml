@@ -1,10 +1,12 @@
 # Nome do fluxo de trabalho
-name: Build e Release Multiplataforma (Não Assinado)
+name: Build e Release Multiplataforma
 
-# Gatilhos para iniciar o workflow
+# Gatilho: Roda APENAS quando uma nova tag no formato v*.*.* é enviada
 on:
   push:
-    branches: [ "main" ]
+    tags:
+      - 'v*.*.*'
+  # Permite também rodar manualmente pela interface do GitHub
   workflow_dispatch:
 
 jobs:
@@ -36,9 +38,8 @@ jobs:
       # 4. Compila o aplicativo e publica no GitHub Releases
       - name: Compilar e Publicar
         env:
-          # O token do GitHub continua sendo necessário para criar o release
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash # <--- CORREÇÃO APLICADA AQUI
+        shell: bash 
         run: |
           if [ "${{ matrix.os }}" == "macos-latest" ]; then
             npm run dist:mac
