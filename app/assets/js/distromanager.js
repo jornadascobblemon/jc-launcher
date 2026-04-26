@@ -14,4 +14,19 @@ const api = new DistributionAPI(
     false
 )
 
+const pullRemote = api.pullRemote.bind(api)
+api.pullRemote = async () => {
+    return await Promise.race([
+        pullRemote(),
+        new Promise(resolve => {
+            setTimeout(() => {
+                resolve({
+                    data: null,
+                    responseStatus: 'TIMEOUT'
+                })
+            }, 5000)
+        })
+    ])
+}
+
 exports.DistroAPI = api

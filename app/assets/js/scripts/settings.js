@@ -4,7 +4,11 @@ const semver = require('semver')
 
 const DropinModUtil  = require('./assets/js/dropinmodutil')
 const { MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR } = require('./assets/js/ipcconstants')
-const { getSupportedJavaRange } = require('./assets/js/javaresolver')
+const {
+    ensureJavaDirIsRoot: settingsEnsureJavaDirIsRoot,
+    validateSelectedJvm: settingsValidateSelectedJvm
+} = require('helios-core/java')
+const { getSupportedJavaRange: getSettingsSupportedJavaRange } = require('./assets/js/javaresolver')
 
 const settingsState = {
     invalid: new Set()
@@ -1355,7 +1359,10 @@ function populateMemoryStatus(){
 async function populateJavaExecDetails(execPath){
     const server = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
 
-    const details = await validateSelectedJvm(ensureJavaDirIsRoot(execPath), getSupportedJavaRange(server.effectiveJavaOptions))
+    const details = await settingsValidateSelectedJvm(
+        settingsEnsureJavaDirIsRoot(execPath),
+        getSettingsSupportedJavaRange(server.effectiveJavaOptions)
+    )
 
     if(details != null) {
         settingsJavaExecDetails.innerHTML = Lang.queryJS('settings.java.selectedJava', { version: details.semverStr, vendor: details.vendor })

@@ -8,7 +8,7 @@ const {
 } = require('helios-core/java')
 
 function getSupportedJavaRange(effectiveJavaOptions) {
-    if(effectiveJavaOptions.suggestedMajor === 21 && effectiveJavaOptions.supported === '>=21.x') {
+    if(effectiveJavaOptions.suggestedMajor === 21 && effectiveJavaOptions.supported.startsWith('>=21')) {
         return '21.x'
     }
 
