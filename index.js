@@ -5,14 +5,12 @@ remoteMain.initialize()
 const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron')
 const autoUpdater                       = require('electron-updater').autoUpdater
 const ejse                              = require('ejs-electron')
-const fs                                = require('fs')
 const isDev                             = require('./app/assets/js/isdev')
 const path                              = require('path')
 const semver                            = require('semver')
 const { pathToFileURL }                 = require('url')
 const { AZURE_CLIENT_ID, MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR, SHELL_OPCODE } = require('./app/assets/js/ipcconstants')
 const LangLoader                        = require('./app/assets/js/langloader')
-const axios = require('axios')
 
 // Setup Lang
 LangLoader.setupLanguage()
@@ -105,9 +103,20 @@ ipcMain.handle(SHELL_OPCODE.TRASH_ITEM, async (event, ...args) => {
     }
 })
 
-// Disable hardware acceleration.
-// https://electronjs.org/docs/tutorial/offscreen-rendering
-app.disableHardwareAcceleration()
+// macOS antigo tinha glitches de composição com HW accel ligado; em Linux/Windows
+// desligar força composição em software e deixa todas as transições visivelmente lentas.
+if (process.platform === 'darwin') {
+    app.disableHardwareAcceleration()
+}
+
+// Wayland-nativo opt-in: alguns compositores (ex.: Hyprland) não mapeiam a janela
+// frameless+show:false sob ozone wayland. Default é XWayland; usuário pode forçar
+// via env (JCL_OZONE_PLATFORM_HINT=auto|wayland|x11) ou CLI (--ozone-platform-hint=).
+if (process.platform === 'linux') {
+    if(process.env.JCL_OZONE_PLATFORM_HINT) {
+        app.commandLine.appendSwitch('ozone-platform-hint', process.env.JCL_OZONE_PLATFORM_HINT)
+    }
+}
 
 
 const REDIRECT_URI_PREFIX = 'https://login.microsoftonline.com/common/oauth2/nativeclient?'
@@ -224,24 +233,13 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGOUT, (ipcEvent, uuid, isLastAccount) => {
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
-// Function to fetch Last-Modified header
-async function getLastModified(url) {
-    try {
-        const response = await axios.head(url);
-        const lastModified = response.headers['last-modified'];
-        return lastModified ? new Date(lastModified).getTime() : Date.now();
-    } catch (error) {
-        console.error(`Error fetching Last-Modified header: ${error}`);
-        return Date.now(); // Fallback to current timestamp
-    }
-}
-
-async function createWindow() {
+function createWindow() {
     win = new BrowserWindow({
         width: 980,
         height: 552,
         icon: getPlatformIcon('SealCircle'),
         frame: false,
+        show: false,
         webPreferences: {
             preload: path.join(__dirname, 'app', 'assets', 'js', 'preloader.js'),
             nodeIntegration: true,
@@ -251,14 +249,11 @@ async function createWindow() {
     })
     remoteMain.enable(win.webContents)
 
-    
-    // Fetch the Last-Modified timestamp of the background
-    const imageUrl = 'https://jornadascobblemon.wstr.fr/images/0.png'
-    const lastModified = await getLastModified(imageUrl)
-    const bodyBackgroundImageUrl = `${imageUrl}?v=${lastModified}`
-    
+    // Cache-buster baseado na versão do launcher: muda quando o app atualiza, sem
+    // bloquear createWindow com HEAD HTTP. (Antes usava Last-Modified do servidor.)
+    const bodyBackgroundImageUrl = `https://jornadascobblemon.wstr.fr/images/0.png?v=${app.getVersion()}`
+
     const data = {
-        bkid: Math.floor((Math.random() * fs.readdirSync(path.join(__dirname, 'app', 'assets', 'images', 'backgrounds')).length)),
         lang: (str, placeHolders) => LangLoader.queryEJS(str, placeHolders),
         bodyBackgroundImageUrl: bodyBackgroundImageUrl // Pass the image url to the ejs template
     }
@@ -266,9 +261,22 @@ async function createWindow() {
 
     win.loadURL(pathToFileURL(path.join(__dirname, 'app', 'app.ejs')).toString())
 
-    /*win.once('ready-to-show', () => {
-        win.show()
-    })*/
+    const showWindow = () => {
+        if(win != null && !win.isVisible()) {
+            win.show()
+        }
+    }
+
+    win.once('ready-to-show', showWindow)
+    win.webContents.once('did-finish-load', () => {
+        setTimeout(showWindow, 250)
+    })
+    setTimeout(showWindow, 3000)
+
+    win.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
+        console.error('Failed to load main window.', { errorCode, errorDescription, validatedURL })
+        showWindow()
+    })
 
     win.removeMenu()
 

@@ -13,6 +13,7 @@ const { DistroAPI } = require('./assets/js/distromanager')
 
 let rscShouldLoad = false
 let fatalStartupError = false
+let startupHandled = false
 
 // Mapping of each view to their container IDs.
 const VIEWS = {
@@ -60,6 +61,7 @@ function getCurrentView(){
 }
 
 async function showMainUI(data){
+    startupHandled = true
 
     if(!isDev){
         loggerAutoUpdater.info('Initializing..')
@@ -107,20 +109,31 @@ async function showMainUI(data){
 }
 
 function showFatalStartupError(){
-    setTimeout(() => {
-        $('#loadingContainer').fadeOut(250, () => {
-            document.getElementById('overlayContainer').style.background = 'none'
-            setOverlayContent(
-                Lang.queryJS('uibinder.startup.fatalErrorTitle'),
-                Lang.queryJS('uibinder.startup.fatalErrorMessage'),
-                Lang.queryJS('uibinder.startup.closeButton')
-            )
-            setOverlayHandler(() => {
-                const window = remote.getCurrentWindow()
-                window.close()
-            })
-            toggleOverlay(true)
+    startupHandled = true
+
+    const displayFatalOverlay = () => {
+        document.getElementById('main').style.display = 'block'
+        document.getElementById('overlayContainer').style.background = 'none'
+        setOverlayContent(
+            Lang.queryJS('uibinder.startup.fatalErrorTitle'),
+            Lang.queryJS('uibinder.startup.fatalErrorMessage'),
+            Lang.queryJS('uibinder.startup.closeButton')
+        )
+        setOverlayHandler(() => {
+            const window = remote.getCurrentWindow()
+            window.close()
         })
+        toggleOverlay(true)
+    }
+
+    setTimeout(() => {
+        if(document.getElementById('loadingContainer') == null) {
+            displayFatalOverlay()
+        } else {
+            $('#loadingContainer').fadeOut(250, () => {
+                displayFatalOverlay()
+            })
+        }
     }, 750)
 }
 
@@ -421,8 +434,13 @@ document.addEventListener('readystatechange', async () => {
         if(rscShouldLoad){
             rscShouldLoad = false
             if(!fatalStartupError){
-                const data = await DistroAPI.getDistribution()
-                await showMainUI(data)
+                try {
+                    const data = await DistroAPI.getDistribution()
+                    await showMainUI(data)
+                } catch(err) {
+                    console.error('Startup load failed.', err)
+                    showFatalStartupError()
+                }
             } else {
                 showFatalStartupError()
             }
@@ -431,16 +449,43 @@ document.addEventListener('readystatechange', async () => {
 
 }, false)
 
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(async () => {
+        if(startupHandled) {
+            return
+        }
+
+        try {
+            const data = await DistroAPI.getDistribution()
+            syncModConfigurations(data)
+            ensureJavaSettings(data)
+            await showMainUI(data)
+        } catch(err) {
+            console.error('Startup fallback failed.', err)
+            showFatalStartupError()
+        }
+    }, 6500)
+})
+
 // Actions that must be performed after the distribution index is downloaded.
 ipcRenderer.on('distributionIndexDone', async (event, res) => {
+    if(startupHandled) {
+        return
+    }
+
     if(res) {
-        const data = await DistroAPI.getDistribution()
-        syncModConfigurations(data)
-        ensureJavaSettings(data)
-        if(document.readyState === 'interactive' || document.readyState === 'complete'){
-            await showMainUI(data)
-        } else {
-            rscShouldLoad = true
+        try {
+            const data = await DistroAPI.getDistribution()
+            syncModConfigurations(data)
+            ensureJavaSettings(data)
+            if(document.readyState === 'interactive' || document.readyState === 'complete'){
+                await showMainUI(data)
+            } else {
+                rscShouldLoad = true
+            }
+        } catch(err) {
+            console.error('Distribution startup failed.', err)
+            showFatalStartupError()
         }
     } else {
         fatalStartupError = true

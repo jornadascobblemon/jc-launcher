@@ -15,9 +15,11 @@ const Lang                           = require('./assets/js/langloader')
 const loggerUICore             = LoggerUtil.getLogger('UICore')
 const loggerAutoUpdater        = LoggerUtil.getLogger('AutoUpdater')
 
-// Log deprecation and process warnings.
-process.traceProcessWarnings = true
-process.traceDeprecation = true
+// Log deprecation and process warnings (dev only — stack traces em prod custam tempo).
+if (isDev) {
+    process.traceProcessWarnings = true
+    process.traceDeprecation = true
+}
 
 // Disable eval function.
 // eslint-disable-next-line
