@@ -11,7 +11,6 @@ const semver                            = require('semver')
 const { pathToFileURL }                 = require('url')
 const { AZURE_CLIENT_ID, MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR, SHELL_OPCODE } = require('./app/assets/js/ipcconstants')
 const LangLoader                        = require('./app/assets/js/langloader')
-const axios = require('axios')
 
 // Setup Lang
 LangLoader.setupLanguage()
@@ -110,11 +109,11 @@ if (process.platform === 'darwin') {
     app.disableHardwareAcceleration()
 }
 
-// Em sessões Wayland (Hyprland, GNOME/KDE Wayland) o Electron por padrão sobe via
-// XWayland — HiDPI/fractional scaling fica borrado e a performance cai. 'auto' usa
-// Wayland nativo quando a sessão é Wayland e mantém X11 nas demais.
-if (process.platform === 'linux') {
-    app.commandLine.appendSwitch('ozone-platform-hint', 'auto')
+// Wayland-nativo opt-in: alguns compositores (ex.: Hyprland) não mapeiam a janela
+// frameless+show:false sob ozone wayland. Default é XWayland; usuário pode forçar
+// via env (JCL_OZONE_PLATFORM_HINT=auto|wayland|x11) ou CLI (--ozone-platform-hint=).
+if (process.platform === 'linux' && process.env.JCL_OZONE_PLATFORM_HINT) {
+    app.commandLine.appendSwitch('ozone-platform-hint', process.env.JCL_OZONE_PLATFORM_HINT)
 }
 
 
@@ -232,19 +231,7 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGOUT, (ipcEvent, uuid, isLastAccount) => {
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
-// Function to fetch Last-Modified header
-async function getLastModified(url) {
-    try {
-        const response = await axios.head(url);
-        const lastModified = response.headers['last-modified'];
-        return lastModified ? new Date(lastModified).getTime() : Date.now();
-    } catch (error) {
-        console.error(`Error fetching Last-Modified header: ${error}`);
-        return Date.now(); // Fallback to current timestamp
-    }
-}
-
-async function createWindow() {
+function createWindow() {
     win = new BrowserWindow({
         width: 980,
         height: 552,
@@ -260,12 +247,10 @@ async function createWindow() {
     })
     remoteMain.enable(win.webContents)
 
-    
-    // Fetch the Last-Modified timestamp of the background
-    const imageUrl = 'https://jornadascobblemon.wstr.fr/images/0.png'
-    const lastModified = await getLastModified(imageUrl)
-    const bodyBackgroundImageUrl = `${imageUrl}?v=${lastModified}`
-    
+    // Cache-buster baseado na versão do launcher: muda quando o app atualiza, sem
+    // bloquear createWindow com HEAD HTTP. (Antes usava Last-Modified do servidor.)
+    const bodyBackgroundImageUrl = `https://jornadascobblemon.wstr.fr/images/0.png?v=${app.getVersion()}`
+
     const data = {
         lang: (str, placeHolders) => LangLoader.queryEJS(str, placeHolders),
         bodyBackgroundImageUrl: bodyBackgroundImageUrl // Pass the image url to the ejs template
