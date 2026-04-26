@@ -110,6 +110,13 @@ if (process.platform === 'darwin') {
     app.disableHardwareAcceleration()
 }
 
+// Em sessões Wayland (Hyprland, GNOME/KDE Wayland) o Electron por padrão sobe via
+// XWayland — HiDPI/fractional scaling fica borrado e a performance cai. 'auto' usa
+// Wayland nativo quando a sessão é Wayland e mantém X11 nas demais.
+if (process.platform === 'linux') {
+    app.commandLine.appendSwitch('ozone-platform-hint', 'auto')
+}
+
 
 const REDIRECT_URI_PREFIX = 'https://login.microsoftonline.com/common/oauth2/nativeclient?'
 
