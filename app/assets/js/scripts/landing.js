@@ -30,6 +30,10 @@ const {
 // Internal Requirements
 const DiscordWrapper          = require('./assets/js/discordwrapper')
 const ProcessBuilder          = require('./assets/js/processbuilder')
+const {
+    findMiseJvmInstallation,
+    getSupportedJavaRange
+}                             = require('./assets/js/javaresolver')
 
 // Launch Elements
 const launch_content          = document.getElementById('launch_content')
@@ -117,7 +121,7 @@ const handleClickLaunchButton = async function (e) {
             toggleLaunchArea(true)
             setLaunchPercentage(0, 100)
 
-            const details = await validateSelectedJvm(ensureJavaDirIsRoot(jExe), server.effectiveJavaOptions.supported)
+            const details = await validateSelectedJvm(ensureJavaDirIsRoot(jExe), getSupportedJavaRange(server.effectiveJavaOptions))
             if(details != null){
                 loggerLanding.info('Jvm Details', details)
                 await dlAsync()
@@ -327,8 +331,8 @@ async function asyncSystemScan(effectiveJavaOptions, launchAfter = true){
 
     const jvmDetails = await discoverBestJvmInstallation(
         ConfigManager.getDataDirectory(),
-        effectiveJavaOptions.supported
-    )
+        getSupportedJavaRange(effectiveJavaOptions)
+    ) ?? await findMiseJvmInstallation(effectiveJavaOptions)
 
     if(jvmDetails == null) {
         // If the result is null, no valid Java installation was found.

@@ -112,8 +112,10 @@ if (process.platform === 'darwin') {
 // Wayland-nativo opt-in: alguns compositores (ex.: Hyprland) não mapeiam a janela
 // frameless+show:false sob ozone wayland. Default é XWayland; usuário pode forçar
 // via env (JCL_OZONE_PLATFORM_HINT=auto|wayland|x11) ou CLI (--ozone-platform-hint=).
-if (process.platform === 'linux' && process.env.JCL_OZONE_PLATFORM_HINT) {
-    app.commandLine.appendSwitch('ozone-platform-hint', process.env.JCL_OZONE_PLATFORM_HINT)
+if (process.platform === 'linux') {
+    if(process.env.JCL_OZONE_PLATFORM_HINT) {
+        app.commandLine.appendSwitch('ozone-platform-hint', process.env.JCL_OZONE_PLATFORM_HINT)
+    }
 }
 
 
@@ -259,8 +261,21 @@ function createWindow() {
 
     win.loadURL(pathToFileURL(path.join(__dirname, 'app', 'app.ejs')).toString())
 
-    win.once('ready-to-show', () => {
-        win.show()
+    const showWindow = () => {
+        if(win != null && !win.isVisible()) {
+            win.show()
+        }
+    }
+
+    win.once('ready-to-show', showWindow)
+    win.webContents.once('did-finish-load', () => {
+        setTimeout(showWindow, 250)
+    })
+    setTimeout(showWindow, 3000)
+
+    win.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
+        console.error('Failed to load main window.', { errorCode, errorDescription, validatedURL })
+        showWindow()
     })
 
     win.removeMenu()
